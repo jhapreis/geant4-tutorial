@@ -30,7 +30,7 @@ void MyPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
         G4int Z = 27;
         G4int A = 60;
 
-        G4double charge   = 0.*eplus;
+        G4double charge = 0.*eplus;
         G4double energy = 0.*keV;
 
         G4ParticleDefinition* ion = G4IonTable::GetIonTable()->GetIon(Z,A,energy);
