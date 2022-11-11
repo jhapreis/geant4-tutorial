@@ -1,7 +1,7 @@
 #ifndef SCINTILLATOR_HH
 #define SCINTILLATOR_HH
 
-#include <G4VUserDetectorConstruction.hh>
+#include "G4VUserDetectorConstruction.hh"
 #include "G4VPhysicalVolume.hh"
 #include "G4LogicalVolume.hh"
 #include "G4Box.hh"
