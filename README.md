@@ -87,7 +87,7 @@ Escolha as opções que deseja alterar. No caso, pressionando `Enter` para modif
 
 * Modifique:
 
-  * `GEANT4_BUILD_MULTITHREADED` para `OFF` (recomendamos uma [outra instalação](https://github.com/jhapreis/geant4-tutorial/blob/master/README.md#3-passo-a-passo-para-a-instala%C3%A7%C3%A3o-single-thread) para habilitar multithreads);
+  * `GEANT4_BUILD_MULTITHREADED` para `OFF` (recomendamos uma [outra instalação](https://github.com/jhapreis/geant4-tutorial#6-instala%C3%A7%C3%A3o-multithread) para habilitar multithreads);
 
   * `GEANT4_INSTALL_DATA` para `ON`;
 
