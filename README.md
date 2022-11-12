@@ -81,9 +81,9 @@ Escolha as opções que deseja alterar. No caso, pressionando `Enter` para modif
 
 * Modifique o campo de `CMAKE_INSTALL_PREFIX` para um folder ao lado da versão baixada:
 
-```bash
-/home/$USER_NAME_HERE$/geant4/geant4-11.0.3-install/
-```
+  ```bash
+  /home/$USER_NAME_HERE/geant4/geant4-11.0.3-install/
+  ```
 
 * Modifique:
 
@@ -94,6 +94,10 @@ Escolha as opções que deseja alterar. No caso, pressionando `Enter` para modif
   * `GEANT4_USE_QT` para `ON`;
 
   * `GEANT4_USE_RAYTRACER_X11` para `ON`;
+
+* Opcional:
+
+  * Para instalar na forma de DEBUG (compatível com `GDB` e com as flags de debug): `CMAKE_BUILD_TYPE` para `DEBUG`
 
 Após, aperte `c` para compilar os arquivos `Make`, novamente `c` (caso algumas bibliotecas opcionais não tenham sido encontradas -- não é um erro) e, finalmente `g` para gerar o arquivo de `Make` do Geant4.
 
@@ -130,7 +134,7 @@ Após isso, é necessário rodar o comando de source para poder garantir que a l
 Para testar a instalação, podemos rodar um dos programas de demo do próprio Geant4. Acesse o arquivo no caminho
 
 ```bash
-cd /home/$USER_NAME_HERE$/geant4/geant4-11.0.3/examples/basic/B1/
+cd /home/$USER_NAME_HERE/geant4/geant4-11.0.3/examples/basic/B1/
 
 mkdir build
 
@@ -141,4 +145,52 @@ cmake ..
 make
 
 ./exampleB1
+```
+
+</br>
+
+### 6. Instalação Multithread
+
+Recomendamos que faça uma outra instalação com os recursos de Multithread habilitados. Isso porque algumas modificações podem ser necessárias para tornar o programa *thread-safe*. No caso, podemos instalar ao lado da instalação single-thread:
+
+```bash
+cd /home/$USER_NAME_HERE/geant4/geant4-v11.0.3/build
+
+make clear
+
+ccmake ..
+```
+
+Troque as opções abaixo:
+
+* Modifique:
+
+  * O campo de `CMAKE_INSTALL_PREFIX`:
+
+  ```bash
+  /home/$USER_NAME_HERE/geant4/geant4-11.0.3-mt-install/
+  ```
+
+  * `GEANT4_BUILD_MULTITHREADED` para `ON`;
+
+Obs: Normalmente, os programas multithread, por efeitos de execuções thread-safe e por execuções mais performáticas, acabam não utilizando uma GUI, então, opcionalmente, pode-se desativar as opções abaixo:
+
+* Opcionais:
+
+  * `GEANT4_USE_QT` para `OFF`;
+
+  * `GEANT4_USE_RAYTRACER_X11` para `OFF`;
+
+Depois, aperte `c` para configurar (`c` novamente, se necessário) e, depois `g` para gerar os arquivos. Depois, execute o seguinte:
+
+```bash
+make -j4
+
+make install
+```
+
+e adicione o source ao arquivo `~./bashrc`:
+
+```bash
+. ~/geant4/geant4-11.0.3-mt-install/share/Geant4-11.0.3/geant4make/geant4make.sh
 ```
