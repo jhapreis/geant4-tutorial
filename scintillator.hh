@@ -48,11 +48,12 @@ public:
     virtual G4VPhysicalVolume* Construct();
 
 private:
+    G4Tubs *solidScintillator;
+
     G4Box 
         *solidWorld, 
         *solidRadiator, 
-        *solidDetector, 
-        *solidScintillator;
+        *solidDetector;
 
     G4LogicalVolume 
         *logicWorld, 

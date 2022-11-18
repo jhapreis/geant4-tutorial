@@ -154,7 +154,7 @@ make
 Recomendamos que faça uma outra instalação com os recursos de Multithread habilitados. Isso porque algumas modificações podem ser necessárias para tornar o programa *thread-safe*. No caso, podemos instalar ao lado da instalação single-thread:
 
 ```bash
-cd /home/$USER_NAME_HERE/geant4/geant4-v11.0.3/build
+cd /home/$USER_NAME_HERE/geant4/geant4-11.0.3/build
 
 make clear
 

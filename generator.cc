@@ -1,13 +1,13 @@
 #include "generator.hh"
 
-MyPrimaryGenerator::MyPrimaryGenerator()
-{
+MyPrimaryGenerator::MyPrimaryGenerator(){
+
     fParticleGun = new G4ParticleGun(1);
 
     G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
     G4ParticleDefinition *particle = particleTable->FindParticle("chargedgeantino");
 
-    G4ThreeVector pos(0.,0.,-20.*km);
+    G4ThreeVector pos(0.,0.,0.);
     G4ThreeVector mom(0.,0.,1.);
 
     fParticleGun->SetParticlePosition(pos);
@@ -16,17 +16,16 @@ MyPrimaryGenerator::MyPrimaryGenerator()
     fParticleGun->SetParticleDefinition(particle);
 }
 
-MyPrimaryGenerator::~MyPrimaryGenerator()
-{
+MyPrimaryGenerator::~MyPrimaryGenerator(){
     delete fParticleGun;
 }
 
-void MyPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
-{
+void MyPrimaryGenerator::GeneratePrimaries(G4Event *anEvent){
+
     G4ParticleDefinition* particle = fParticleGun->GetParticleDefinition();
 
-    if(particle == G4ChargedGeantino::ChargedGeantino())
-    {
+    if(particle == G4ChargedGeantino::ChargedGeantino()){
+        
         G4int Z = 27;
         G4int A = 60;
 

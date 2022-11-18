@@ -89,9 +89,20 @@ void ScintillatorConstruction::DefineMaterials(){
 
 void ScintillatorConstruction::Construct_Detector(){
 
-    solidScintillator = new G4Box("solidScintillator", Solid_Scintillator_X, Solid_Scintillator_Y, Solid_Scintillator_Z);
+    // solidScintillator = new G4Box("solidScintillator", Solid_Scintillator_X, Solid_Scintillator_Y, Solid_Scintillator_Z);
+
+    // logicScintillator = new G4LogicalVolume(solidScintillator, plastic_SC_material, "logicalScintillator");
+
+    solidScintillator = new G4Tubs(
+        "solidScintillator", 
+        0.*cm, // inner radius
+        Solid_Scintillator_Radius, // outer radius
+        Solid_Scintillator_Height,   // height
+        0.0*deg,  360.0*deg);  // segment angles
 
     logicScintillator = new G4LogicalVolume(solidScintillator, plastic_SC_material, "logicalScintillator");
+
+    physDetector = new G4PVPlacement(0, G4ThreeVector(0.*cm, 0.*cm, 0.*cm), logicScintillator, "physScintillator", logicWorld, false, 0, true);
 
     fScoringVolume = logicScintillator;
 
@@ -100,6 +111,8 @@ void ScintillatorConstruction::Construct_Detector(){
 
     logicDetector = new G4LogicalVolume(solidDetector, world_material, "logicDetector");
 
+    physDetector = new G4PVPlacement(0, G4ThreeVector(0.1*cm, 0.1*cm, 4.*cm), logicDetector, "physDetector", logicWorld, false, 0, true);
+
 
     skin = new G4LogicalSkinSurface("skin", logicWorld, mirrorSurface);
 
@@ -107,7 +120,6 @@ void ScintillatorConstruction::Construct_Detector(){
 
     // physDetector = new G4PVPlacement(0, logicDetector, "physDetector", logicWorld, false, 0, true);
 
-    physDetector = new G4PVPlacement(0, G4ThreeVector(0.1*cm, 0.1*cm, 4.*cm), logicDetector, "physDetector", logicWorld, false, 0, true);
 
     // physDetector = new G4PVPlacement(0, G4ThreeVector(0.15*cm, 0.15*cm, 0.5*cm), logicDetector, "physDetector", logicWorld, false, 1, true);
 
