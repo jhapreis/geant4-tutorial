@@ -7,7 +7,7 @@ MyPrimaryGenerator::MyPrimaryGenerator(){
     G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
     G4ParticleDefinition *particle = particleTable->FindParticle("chargedgeantino");
 
-    G4ThreeVector pos(0.,0.,0.);
+    G4ThreeVector pos(0.,0.,-1*Solid_Scintillator_Height/2);
     G4ThreeVector mom(0.,0.,1.);
 
     fParticleGun->SetParticlePosition(pos);

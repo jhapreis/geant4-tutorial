@@ -5,10 +5,6 @@ ScintillatorConstruction::ScintillatorConstruction()
     nCols = 10;
     nRows = 10;
 
-    xWorld = 10.*cm;
-    yWorld = 10.*cm;
-    zWorld = 10.*cm; 
-
     std::cout << " ---------- Generic Messenger ---------- " << std::endl;
     fMessenger = new G4GenericMessenger(this, "/detector/", "Detector Construction");
 
@@ -87,25 +83,24 @@ void ScintillatorConstruction::DefineMaterials(){
 }
 
 
-void ScintillatorConstruction::Construct_Detector(){
-
-    // solidScintillator = new G4Box("solidScintillator", Solid_Scintillator_X, Solid_Scintillator_Y, Solid_Scintillator_Z);
-
-    // logicScintillator = new G4LogicalVolume(solidScintillator, plastic_SC_material, "logicalScintillator");
+void ScintillatorConstruction::Scintillator(){
 
     solidScintillator = new G4Tubs(
         "solidScintillator", 
-        0.*cm, // inner radius
+        0.*cm,                     // inner radius
         Solid_Scintillator_Radius, // outer radius
-        Solid_Scintillator_Height,   // height
-        0.0*deg,  360.0*deg);  // segment angles
+        Solid_Scintillator_Height, // height
+        0.0*deg,  360.0*deg);      // segment angles
 
     logicScintillator = new G4LogicalVolume(solidScintillator, plastic_SC_material, "logicalScintillator");
 
     physDetector = new G4PVPlacement(0, G4ThreeVector(0.*cm, 0.*cm, 0.*cm), logicScintillator, "physScintillator", logicWorld, false, 0, true);
 
     fScoringVolume = logicScintillator;
+}
 
+
+void ScintillatorConstruction::Detector(){
 
     solidDetector = new G4Box("solidDetector", Solid_Detector_X, Solid_Detector_Y, Solid_Detector_Z);
 
@@ -141,10 +136,9 @@ void ScintillatorConstruction::Construct_Detector(){
     // }
 }
 
+G4VPhysicalVolume *ScintillatorConstruction::World(){
 
-G4VPhysicalVolume *ScintillatorConstruction::Construct_World(){
-
-    solidWorld = new G4Box("solidWorld", xWorld, yWorld, zWorld);
+    solidWorld = new G4Box("solidWorld", World_X, World_Y, World_Z);
 
     logicWorld = new G4LogicalVolume(solidWorld, world_material, "logicWorld");
 
@@ -155,9 +149,11 @@ G4VPhysicalVolume *ScintillatorConstruction::Construct_World(){
 
 G4VPhysicalVolume *ScintillatorConstruction::Construct(){
 
-    Construct_World();
+    World();
 
-    Construct_Detector();
+    Scintillator();
+
+    Detector();
 
     return physWorld;
 }

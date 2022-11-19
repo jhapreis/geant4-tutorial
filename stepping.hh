@@ -6,7 +6,7 @@
 #include "G4Gamma.hh"
 #include "G4Electron.hh"
 
-#include "construction.hh"
+#include "scintillator.hh"
 #include "event.hh"
 
 class MySteppingAction : public G4UserSteppingAction

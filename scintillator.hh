@@ -48,7 +48,7 @@ public:
     virtual G4VPhysicalVolume* Construct();
 
 private:
-    G4Tubs *solidScintillator;
+    G4Tubs* solidScintillator;
 
     G4Box 
         *solidWorld, 
@@ -68,7 +68,7 @@ private:
         *physRadiator, 
         *physScintillator;
 
-    G4OpticalSurface *mirrorSurface;
+    G4OpticalSurface* mirrorSurface;
 
     G4LogicalSkinSurface* skin;
 
@@ -79,8 +79,6 @@ private:
     G4GenericMessenger *fMessenger;
 
     G4int nRows, nCols;
-
-    G4double xWorld, yWorld, zWorld;
 
     /**
      * @brief Define the Materials and the Material Properties Tables for the
@@ -100,14 +98,20 @@ private:
      * 
      * @return G4VPhysicalVolume* 
      */
-    virtual G4VPhysicalVolume* Construct_World();
+    virtual G4VPhysicalVolume* World();
 
     /**
      * @brief Construct the Solids and Logical Volumes 
      * for the scintillator and detector
      * 
      */
-    void Construct_Detector();
+    void Detector();
+
+    /**
+     * @brief 
+     * 
+     */
+    void Scintillator();
 };
 
 #endif

@@ -19,7 +19,11 @@
 #define Solid_Scintillator_Radius 5.*cm
 
 #define Solid_Detector_X 1.*cm
-#define Solid_Detector_Y 5.*cm
-#define Solid_Detector_Z 6.*cm
+#define Solid_Detector_Y 1.*cm
+#define Solid_Detector_Z 1.*cm
+
+#define World_X 100.*cm
+#define World_Y 100.*cm
+#define World_Z 100.*cm
 
 #endif

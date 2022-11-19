@@ -1,18 +1,18 @@
 #include "stepping.hh"
 
-MySteppingAction::MySteppingAction(MyEventAction *eventAction)
-{
+MySteppingAction::MySteppingAction(MyEventAction *eventAction){
+    
     fEventAction = eventAction;
 }
 
 MySteppingAction::~MySteppingAction()
 {}
 
-void MySteppingAction::UserSteppingAction(const G4Step *step)
-{   
+void MySteppingAction::UserSteppingAction(const G4Step *step){
+
     G4LogicalVolume *volume = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume();
     
-    const MyDetectorConstruction *detectorConstruction = static_cast<const MyDetectorConstruction*> (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
+    const ScintillatorConstruction* detectorConstruction = static_cast<const ScintillatorConstruction*> (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
     
     G4LogicalVolume *fScoringVolume = detectorConstruction->GetScoringVolume();
     
