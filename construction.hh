@@ -16,8 +16,8 @@
 
 #include "detector.hh"
 
-class MyDetectorConstruction : public G4VUserDetectorConstruction
-{
+class MyDetectorConstruction : public G4VUserDetectorConstruction{
+    
 public:
     MyDetectorConstruction();
     ~MyDetectorConstruction();

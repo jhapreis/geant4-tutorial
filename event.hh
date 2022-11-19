@@ -8,8 +8,8 @@
 
 #include "run.hh"
 
-class MyEventAction : public G4UserEventAction
-{
+class MyEventAction : public G4UserEventAction{
+    
 public:
     MyEventAction(MyRunAction*);
     ~MyEventAction();

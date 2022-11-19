@@ -6,8 +6,8 @@
 
 #include "G4AnalysisManager.hh"
 
-class MyRunAction : public G4UserRunAction
-{
+class MyRunAction : public G4UserRunAction{
+    
 public:
     MyRunAction();
     ~MyRunAction();

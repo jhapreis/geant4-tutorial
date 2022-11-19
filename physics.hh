@@ -8,8 +8,8 @@
 #include "G4DecayPhysics.hh"
 #include "QGSP_BERT.hh"
 
-class MyPhysicsList : public G4VModularPhysicsList
-{
+class MyPhysicsList : public G4VModularPhysicsList{
+    
 public:
     MyPhysicsList();
     ~MyPhysicsList();

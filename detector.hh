@@ -7,8 +7,8 @@
 #include "G4PhysicsOrderedFreeVector.hh"
 #include "G4AnalysisManager.hh"
 
-class MySensitiveDetector : public G4VSensitiveDetector
-{
+class MySensitiveDetector : public G4VSensitiveDetector{
+    
 public:
     MySensitiveDetector(G4String);
     ~MySensitiveDetector();

@@ -17,8 +17,8 @@
 #include "detector.hh"
 #include "cfg.hh"
 
-class ScintillatorConstruction : public G4VUserDetectorConstruction
-{
+class ScintillatorConstruction : public G4VUserDetectorConstruction{
+    
 public:
     /**
      * @brief Class Constructor...

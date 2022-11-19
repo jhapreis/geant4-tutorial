@@ -9,8 +9,8 @@
 #include "scintillator.hh"
 #include "event.hh"
 
-class MySteppingAction : public G4UserSteppingAction
-{
+class MySteppingAction : public G4UserSteppingAction{
+    
 public:
     MySteppingAction(MyEventAction* eventAction);
     ~MySteppingAction();
