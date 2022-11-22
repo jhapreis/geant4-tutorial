@@ -82,7 +82,11 @@
 			"stop_token": "cpp",
 			"streambuf": "cpp",
 			"thread": "cpp",
-			"typeinfo": "cpp"
-		}
+			"typeinfo": "cpp",
+			"img": "cpp",
+			"group": "cpp",
+			"value": "cpp"
+		},
+		"terminal.explorerKind": "external"
 	}
 }

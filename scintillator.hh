@@ -48,6 +48,15 @@ public:
     virtual G4VPhysicalVolume* Construct();
 
 private:
+    std::vector<G4double> 
+        wavelenghts,
+        energy,
+        rindex_PlasticSC,
+        rindexWorld,
+        reflectivity;
+
+    G4NistManager* nIst;
+
     G4Tubs* solidScintillator;
 
     G4Box 
@@ -81,17 +90,10 @@ private:
     G4int nRows, nCols;
 
     /**
-     * @brief Define the Materials and the Material Properties Tables for the
-     * Scintillator, Reflective Surface and World Volume.
-     * 
-     */
-    virtual void DefineMaterials();
-
-    /**
      * @brief 
      * 
      */
-    virtual void Construct_SensitiveDetector_and_Field();
+    virtual void ConstructSDandField();
     
     /**
      * @brief 
@@ -112,6 +114,11 @@ private:
      * 
      */
     void Scintillator();
+
+    /**
+     * 
+    */
+    void MirrorSurface();
 };
 
 #endif

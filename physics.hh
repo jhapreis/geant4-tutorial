@@ -13,6 +13,13 @@ class MyPhysicsList : public G4VModularPhysicsList{
 public:
     MyPhysicsList();
     ~MyPhysicsList();
+
+    G4VModularPhysicsList* Get_PhysicsList();
+
+private:
+    void PhysicsList();
+
+    G4VModularPhysicsList* physicsList;
 };
 
 #endif

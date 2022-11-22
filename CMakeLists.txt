@@ -13,12 +13,12 @@ add_executable(sim sim.cc ${sources} ${headers})
 target_link_libraries(sim ${Geant4_LIBRARIES})
 
 file(GLOB MACRO_FILES
-  "*.mac"
+  "macros/*.mac"
 )
 file(COPY ${MACRO_FILES} DESTINATION ${PROJECT_BINARY_DIR})
 
 file(GLOB DATA_FILES
-  "*.dat"
+  "data/*.dat"
 )
 file(COPY ${DATA_FILES} DESTINATION ${PROJECT_BINARY_DIR})
 

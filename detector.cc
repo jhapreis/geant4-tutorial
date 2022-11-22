@@ -29,8 +29,8 @@ MySensitiveDetector::MySensitiveDetector(G4String name) : G4VSensitiveDetector(n
 MySensitiveDetector::~MySensitiveDetector()
 {}
 
-G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhist)
-{
+G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhist){
+
     G4Track *track = aStep->GetTrack();
 
     //track->SetTrackStatus(fStopAndKill);
@@ -43,7 +43,7 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
 
     G4double time = preStepPoint->GetGlobalTime();
 
-    G4double wlen = (1.239841939*eV/momPhoton.mag())*1E+03;
+    G4double wlen = (hc_constant_eV/momPhoton.mag())*1E+03;
 
     //G4cout << "Photon position: " << posPhoton << G4endl;
 
@@ -73,8 +73,8 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
     man->FillNtupleDColumn(0, 5, wlen);
     man->AddNtupleRow(0);
 
-    if(G4UniformRand() < quEff->Value(wlen))
-    {
+    if(G4UniformRand() < quEff->Value(wlen)){
+        
         man->FillNtupleIColumn(1, 0, evt);
         man->FillNtupleDColumn(1, 1, posDetector[0]);
         man->FillNtupleDColumn(1, 2, posDetector[1]);

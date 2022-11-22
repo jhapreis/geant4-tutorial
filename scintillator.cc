@@ -1,9 +1,16 @@
 #include "scintillator.hh"
 
-ScintillatorConstruction::ScintillatorConstruction()
-{
+ScintillatorConstruction::ScintillatorConstruction(){
+
     nCols = 10;
     nRows = 10;
+
+    wavelenghts      = {Scintillator_Wavelenght_Min, Scintillator_Wavelenght_Max};
+    energy           = {hc_constant_eV/wavelenghts[0], hc_constant_eV/wavelenghts[1]};
+    rindex_PlasticSC = {1.58, 1.58};
+    rindexWorld      = {1.0, 1.0};
+    reflectivity     = {1.0, 1.0};
+
 
     std::cout << " ---------- Generic Messenger ---------- " << std::endl;
     fMessenger = new G4GenericMessenger(this, "/detector/", "Detector Construction");
@@ -13,12 +20,9 @@ ScintillatorConstruction::ScintillatorConstruction()
     fMessenger->DeclareProperty("nCols", nCols, "Number of cols");
     fMessenger->DeclareProperty("nRows", nRows, "Number of rows");
 
-
-    std::cout << " ---------- Define Materials ---------- " << std::endl;
-    DefineMaterials();
     
-
     std::cout << " ---------- Construct ---------- " << std::endl;
+    nIst = G4NistManager::Instance();
     Construct();
 }
 
@@ -27,70 +31,57 @@ ScintillatorConstruction::~ScintillatorConstruction()
 {}
 
 
-void ScintillatorConstruction::DefineMaterials(){
+G4VPhysicalVolume *ScintillatorConstruction::Construct(){
 
-    G4double energy[2] = {1.239841939*eV/0.2, 1.239841939*eV/0.9};
-    G4double rindex_PlasticSC[2] = {1.58, 1.58};
-    G4double rindexWorld[2] = {1.0, 1.0};
-    G4double reflectivity[2] = {1.0, 1.0};
+    World();
 
+    Scintillator();
 
-    std::cout << " ---------- NIST Instance ---------- " << std::endl;
-    G4NistManager *nIst = G4NistManager::Instance();
+    Detector();
 
+    MirrorSurface();
 
-    // Plastic Scitillator
-    std::cout << " ---------- Plastic Scitillator ---------- " << std::endl;
-
-    std::cout << " ---------- Build Scintillator Material ---------- " << std::endl;
-    plastic_SC_material = nIst->FindOrBuildMaterial("G4_PLASTIC_SC_VINYLTOLUENE");
-
-    std::cout << " ---------- Assign Material Properties Table ---------- " << std::endl;
-    G4MaterialPropertiesTable *MPT_plastic_SC = new G4MaterialPropertiesTable();
-    MPT_plastic_SC->AddProperty("RINDEX", energy, rindex_PlasticSC, 2);
-    plastic_SC_material->SetMaterialPropertiesTable(MPT_plastic_SC);
+    return physWorld;
+}
 
 
-    // World Volume
-    std::cout << " ---------- World Volume ---------- " << std::endl;
-
-    std::cout << " ---------- Build Air Material ---------- " << std::endl;
-    world_material = nIst->FindOrBuildMaterial("G4_AIR");
-
-    std::cout << " ---------- Assign Material Properties Table ---------- " << std::endl;
-    G4MaterialPropertiesTable *MPT_world = new G4MaterialPropertiesTable();
-    MPT_world->AddProperty("RINDEX", energy, rindexWorld, 2);
-    world_material->SetMaterialPropertiesTable(MPT_world);
-
-
+void ScintillatorConstruction::MirrorSurface(){
     // Mirror Surface
     std::cout << " ---------- Mirror Surface ---------- " << std::endl;
     mirrorSurface = new G4OpticalSurface("mirrorSurface");
-
-    std::cout << " ---------- Set Type ---------- " << std::endl;
     mirrorSurface->SetType(dielectric_metal);
-
-    std::cout << " ---------- Set Finish ---------- " << std::endl;
     mirrorSurface->SetFinish(ground);
-
-    std::cout << " ---------- Set Model ---------- " << std::endl;
     mirrorSurface->SetModel(unified);
 
-    std::cout << " ---------- Assign Material Properties Table ---------- " << std::endl;
     G4MaterialPropertiesTable *mptMirror = new G4MaterialPropertiesTable();
     mptMirror->AddProperty("REFLECTIVITY", energy, reflectivity, 2);
     mirrorSurface->SetMaterialPropertiesTable(mptMirror);
+
+    skin = new G4LogicalSkinSurface("skin", logicScintillator, mirrorSurface);
 }
 
 
 void ScintillatorConstruction::Scintillator(){
+    // Plastic Scitillator
+
+    std::cout << " ---------- Plastic Scitillator ---------- " << std::endl;
+
+    plastic_SC_material = new G4Material("plasticScint", 1.096*g/cm3, 1, kStateSolid);
+    plastic_SC_material->AddMaterial( nIst->FindOrBuildMaterial("G4_PLASTIC_SC_VINYLTOLUENE"), 1.0 );
+
+    G4MaterialPropertiesTable* MPT_plastic_SC = new G4MaterialPropertiesTable();
+    MPT_plastic_SC->AddProperty("RINDEX", energy, rindex_PlasticSC, 2);
+    MPT_plastic_SC->AddConstProperty("SCINTILLATIONYIELD", Scintillator_Scintillation_Yeld);
+    MPT_plastic_SC->AddConstProperty("RESOLUTIONSCALE" , 1.0);
+
+    plastic_SC_material->SetMaterialPropertiesTable(MPT_plastic_SC);
 
     solidScintillator = new G4Tubs(
         "solidScintillator", 
-        0.*cm,                     // inner radius
-        Solid_Scintillator_Radius, // outer radius
-        Solid_Scintillator_Height, // height
-        0.0*deg,  360.0*deg);      // segment angles
+        0.*cm,                 // inner radius
+        Scintillator_Radius,   // outer radius
+        Scintillator_Height/2, // height
+        0.0*deg,  360.0*deg);  // segment angles
 
     logicScintillator = new G4LogicalVolume(solidScintillator, plastic_SC_material, "logicalScintillator");
 
@@ -106,17 +97,7 @@ void ScintillatorConstruction::Detector(){
 
     logicDetector = new G4LogicalVolume(solidDetector, world_material, "logicDetector");
 
-    physDetector = new G4PVPlacement(0, G4ThreeVector(0.1*cm, 0.1*cm, 4.*cm), logicDetector, "physDetector", logicWorld, false, 0, true);
-
-
-    skin = new G4LogicalSkinSurface("skin", logicWorld, mirrorSurface);
-
-    // physScintillator = new G4PVPlacement(0, logicScintillator, "physScintillator", logicWorld, false, 0, true);
-
-    // physDetector = new G4PVPlacement(0, logicDetector, "physDetector", logicWorld, false, 0, true);
-
-
-    // physDetector = new G4PVPlacement(0, G4ThreeVector(0.15*cm, 0.15*cm, 0.5*cm), logicDetector, "physDetector", logicWorld, false, 1, true);
+    physDetector = new G4PVPlacement(0, G4ThreeVector(0.*cm, 0.*cm, Scintillator_Height/2 + 1.1*cm), logicDetector, "physDetector", logicWorld, false, 0, true);
 
     // for(G4int i = 0; i < 6; i++)
     // {
@@ -136,7 +117,19 @@ void ScintillatorConstruction::Detector(){
     // }
 }
 
+
 G4VPhysicalVolume *ScintillatorConstruction::World(){
+    // World Volume
+
+    std::cout << " ---------- World Volume ---------- " << std::endl;
+
+    world_material = nIst->FindOrBuildMaterial("G4_AIR");
+
+    G4MaterialPropertiesTable *MPT_world = new G4MaterialPropertiesTable();
+
+    MPT_world->AddProperty("RINDEX", energy, rindexWorld, 2);
+
+    world_material->SetMaterialPropertiesTable(MPT_world);
 
     solidWorld = new G4Box("solidWorld", World_X, World_Y, World_Z);
 
@@ -147,18 +140,8 @@ G4VPhysicalVolume *ScintillatorConstruction::World(){
     return physWorld;
 }
 
-G4VPhysicalVolume *ScintillatorConstruction::Construct(){
 
-    World();
-
-    Scintillator();
-
-    Detector();
-
-    return physWorld;
-}
-
-void ScintillatorConstruction::Construct_SensitiveDetector_and_Field(){
+void ScintillatorConstruction::ConstructSDandField(){
 
     MySensitiveDetector *sensDet = new MySensitiveDetector("SensitiveDetector");
 
